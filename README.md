@@ -28,29 +28,35 @@ Este projeto foi desenvolvido por uma equipe de alunos dedicados dos departament
 Aqui estão algumas capturas de tela demonstrando as principais funcionalidades do sistema:  
 
 ### 🔐 Tela de Login  
-![Tela Login](docs/images/tela_login.png)
-
----
-
-### 🦷 Tela de Atendimento  
-![Tela Atendimento](docs/images/tela_atendimento.png)
-
----
-
-### 👥 Tela Patrono (Relação dos Alunos Envolvidos)  
-![Tela Patrono](docs/images/tela_patronos.png)
-
----
-
-### 📊 Tela Relatório  
-![Tela Relatório](docs/images/tela_relatorios.png)
+![Tela Login](sorriso/docs/images/tela_login.png)
 
 ---
 
 ### 🏠 Tela Inicial  
-![Tela Inicial](docs/images/tela_inicial.png)
+![Tela Inicial](sorriso/docs/images/tela_inicial.png)
 
 ---
+
+### 🦷 Tela de Atendimento  
+![Tela Atendimento](sorriso/docs/images/tela_atendimento.png)
+
+---
+
+### 👥 Tela Patrono (Relação dos Alunos Envolvidos)  
+![Tela Patrono](sorriso/docs/images/tela_patronos.png)
+
+---
+
+### 📊 Tela Relatório  
+![Tela Relatório](sorriso/docs/images/tela_relatorios.png)
+![Tela Relatório](sorriso/docs/images/tela_relatorios (1).png)
+![Tela Relatório](sorriso/docs/images/tela_relatorios (2).png)
+![Tela Relatório](sorriso/docs/images/tela_relatorios (3).png)
+![Tela Relatório](sorriso/docs/images/tela_relatorios (4).png)
+
+---
+
+
 
 ## 🛠️ Implementações Futuras
 
@@ -62,7 +68,7 @@ Aqui estão algumas capturas de tela demonstrando as principais funcionalidades 
 
 ## 🤝 Agradecimentos
 
-Agradecemos ao **Professor Mestre Fábio Paz** pela orientação e suporte contínuo durante o desenvolvimento deste projeto.  
+Agradecemos ao **Professor Mestre Fábio Paz** pela orientação e apoio para o desenvolvimento deste projeto.  
 
 Também parabenizamos toda a equipe envolvida pelo comprometimento e dedicação.  
 
