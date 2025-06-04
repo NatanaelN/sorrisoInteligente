@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Dashboard Epidemiológico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+    rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f2f5;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 250px;
+      width: 100%;
+    }
+
+    .nav-button {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-button.active {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .nav-button:hover {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+    }
+
+    .disease-button {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .disease-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px -3px rgba(0, 0, 0, 0.15);
+    }
+
+    .disease-button.active {
+      background-color: #1e3a8a;
+      color: white;
+      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+<div class="flex h-screen">
+  <aside
+    class="w-64 bg-blue-700 text-white p-6 space-y-6 flex flex-col fixed h-full">
+    <div class="flex items-center space-x-3 mb-6">
+      <span class="material-icons text-4xl">medical_services</span>
+      <h1 class="text-2xl font-semibold">Análise Bucal</h1>
+    </div>
+    <nav class="flex-grow">
+      <button
+        class="nav-button w-full text-left py-3 px-4 rounded-lg font-medium flex items-center space-x-3 active"
+        data-disease="geral">
+        <span class="material-icons">dashboard</span>
+        <span>Visão Geral</span>
+      </button>
+      <button
+        class="nav-button w-full text-left py-3 px-4 rounded-lg font-medium flex items-center space-x-3"
+        data-disease="caries">
+        <span class="material-icons">coronavirus</span>
+        <span>Cáries</span>
+      </button>
+      <button
+        class="nav-button w-full text-left py-3 px-4 rounded-lg font-medium flex items-center space-x-3"
+        data-disease="gengivite">
+        <span class="material-icons">sick</span>
+        <span>Gengivite</span>
+      </button>
+      <button
+        class="nav-button w-full text-left py-3 px-4 rounded-lg font-medium flex items-center space-x-3"
+        data-disease="periodontite">
+        <span class="material-icons">masks</span>
+        <span>Periodontite</span>
+      </button>
+      <button
+        class="nav-button w-full text-left py-3 px-4 rounded-lg font-medium flex items-center space-x-3"
+        data-disease="cancer">
+        <span class="material-icons">biotech</span>
+        <span>Câncer Bucal</span>
+      </button>
+    </nav>
+    <div class="mt-auto">
+      <div class="border-t border-blue-600 pt-4">
+        <p class="text-sm text-blue-200">Filtros:</p>
+        <select
+          class="mt-2 w-full bg-blue-600 text-white p-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option>Equipe Manhã</option>
+          <option>Equipe Tarde</option>
+          <option>Equipe Noite</option>
+        </select>
+        <input
+          class="mt-2 w-full bg-blue-600 text-white p-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          type="date" value="2025-29-05"/>
+      </div>
+      <a href="initial.html"
+         class="mt-4 block bg-blue-600 text-white p-2 rounded-md text-center text-sm font-medium hover:bg-blue-700 transition">
+        <span class="material-icons align-middle">arrow_back</span>
+        <span class="align-middle">Voltar</span>
+      </a>
+    </div>
+  </aside>
+  <main class="flex-1 ml-64 p-8 space-y-8">
+    <header class="flex justify-between items-center">
+      <h2 class="text-3xl font-semibold text-gray-700" id="dashboardTitle">Visão
+        Geral - Saúde Bucal</h2>
+      <div class="flex items-center space-x-4">
+        <span class="material-icons text-gray-500">notifications</span>
+        <img alt="Avatar do usuário" class="w-10 h-10 rounded-full object-cover"
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUO3OvxcpxpgLjAI2vFgzl-Ehp5wL9zymfh-l_F4AAEE6yWqxW8-KJzHlJpV0bfBW6CnxToCVeP6_gX7rrZAYGwd_-v_ZVVo7sJWwi1naMDyhx-FgB25IR37PC-uGo5GMsgUSfGKQyTHabvbgX6pZQiK1rrVZtArvMHyBSuEazWZOj1zKRhaYAo1E9FzEk28DmxvbcT4bkqL7veLiotfuf6NHBL_U2Vl876O3wCJpoMMVaynM3rgznuv0Vt7V0W9vaF-wGnqTmfIc"/>
+      </div>
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <button
+        class="disease-button bg-blue-600 text-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center text-center"
+        data-disease="caries">
+        <span class="material-icons text-4xl mb-2">coronavirus</span>
+        <h3 class="text-xl font-semibold">Cáries</h3>
+        <p class="text-3xl font-bold mt-1" id="cariesCount">1250</p>
+      </button>
+      <button
+        class="disease-button bg-blue-600 text-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center text-center"
+        data-disease="gengivite">
+        <span class="material-icons text-4xl mb-2">sick</span>
+        <h3 class="text-xl font-semibold">Gengivite</h3>
+        <p class="text-3xl font-bold mt-1" id="gengiviteCount">870</p>
+      </button>
+      <button
+        class="disease-button bg-blue-600 text-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center text-center"
+        data-disease="periodontite">
+        <span class="material-icons text-4xl mb-2">masks</span>
+        <h3 class="text-xl font-semibold">Periodontite</h3>
+        <p class="text-3xl font-bold mt-1" id="periodontiteCount">350</p>
+      </button>
+      <button
+        class="disease-button bg-blue-600 text-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center text-center"
+        data-disease="cancer">
+        <span class="material-icons text-4xl mb-2">biotech</span>
+        <h3 class="text-xl font-semibold">Câncer Bucal</h3>
+        <p class="text-3xl font-bold mt-1" id="cancerCount">95</p>
+      </button>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="card lg:col-span-2">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">Casos por
+          Período</h3>
+        <div class="chart-container">
+          <canvas id="casosPorPeriodoChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">Casos por Faixa
+          Etária</h3>
+        <div class="chart-container">
+          <canvas id="casosPorFaixaEtariaChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">Distribuição por
+          Sexo</h3>
+        <div class="chart-container" style="height: 300px;">
+          <canvas id="distribuicaoSexoChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">Casos por
+          Região</h3>
+        <div class="chart-container">
+          <canvas id="casosPorRegiaoChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+  const diseaseData = {
+    geral: {
+      title: "Visão Geral - Saúde Bucal",
+      counts: {caries: 342, gengivite: 231, periodontite: 127, cancer: 27},
+      casosPeriodo: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        data: [60, 57, 79, 75, 47, 52, 40, 58, 70, 73, 51, 65]
+      },
+      casosFaixaEtaria: {
+        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+        data: [59, 80, 104, 156, 156, 111, 62]
+      },
+      distribuicaoSexo: {
+        labels: ['Masculino', 'Feminino', 'Outro'],
+        data: [351, 353, 22]
+      },
+      casosRegiao: {
+        labels: ['Norte', 'Sul', 'Leste', 'Oeste', 'Centro'],
+        data: [128, 210, 188, 116, 85]
+      }
+    },
+    caries: {
+      title: "Análise de Cáries",
+      counts: {caries: 342, gengivite: 0, periodontite: 0, cancer: 0},
+      // Specific counts for Caries
+      casosPeriodo: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        data: [30, 25, 40, 35, 20, 22, 18, 28, 33, 38, 23, 30]
+      },
+      casosFaixaEtaria: {
+        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+        data: [31, 47, 58, 78, 70, 39, 19]
+      },
+      distribuicaoSexo: {
+        labels: ['Masculino', 'Feminino', 'Outro'],
+        data: [164, 168, 10]
+      },
+      casosRegiao: {
+        labels: ['Norte', 'Sul', 'Leste', 'Oeste', 'Centro'],
+        data: [75, 96, 79, 62, 31]
+      }
+    },
+    gengivite: {
+      title: "Análise de Gengivite",
+      counts: {caries: 0, gengivite: 231, periodontite: 0, cancer: 0},
+      casosPeriodo: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        data: [20, 18, 25, 22, 15, 17, 12, 19, 22, 25, 16, 20]
+      },
+      casosFaixaEtaria: {
+        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+        data: [19, 31, 39, 58, 46, 27, 12]
+      },
+      distribuicaoSexo: {
+        labels: ['Masculino', 'Feminino', 'Outro'],
+        data: [97, 127, 7]
+      },
+      casosRegiao: {
+        labels: ['Norte', 'Sul', 'Leste', 'Oeste', 'Centro'],
+        data: [42, 74, 62, 30, 23]
+      }
+    },
+    periodontite: {
+      title: "Análise de Periodontite",
+      counts: {caries: 0, gengivite: 0, periodontite: 127, cancer: 0},
+      casosPeriodo: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        data: [10, 12, 10, 15, 12, 10, 8, 10, 12, 10, 8, 10]
+      },
+      casosFaixaEtaria: {
+        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+        data: [4, 7, 11, 25, 36, 29, 15]
+      },
+      distribuicaoSexo: {
+        labels: ['Masculino', 'Feminino', 'Outro'],
+        data: [64, 61, 3]
+      },
+      casosRegiao: {
+        labels: ['Norte', 'Sul', 'Leste', 'Oeste', 'Centro'],
+        data: [19, 32, 38, 25, 13]
+      }
+    },
+    cancer: {
+      title: "Análise de Câncer Bucal",
+      counts: {caries: 0, gengivite: 0, periodontite: 0, cancer: 27},
+      casosPeriodo: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        data: [0, 2, 4, 3, 0, 3, 2, 1, 3, 0, 4, 5]
+      },
+      casosFaixaEtaria: {
+        labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+        data: [1, 2, 2, 5, 8, 6, 3]
+      },
+      distribuicaoSexo: {
+        labels: ['Masculino', 'Feminino', 'Outro'],
+        data: [18, 7, 2]
+      },
+      casosRegiao: {
+        labels: ['Norte', 'Sul', 'Leste', 'Oeste', 'Centro'],
+        data: [2, 10, 4, 1, 10]
+      }
+    }
+  };
+  let casosPorPeriodoChart, casosPorFaixaEtariaChart, distribuicaoSexoChart,
+    casosPorRegiaoChart = null;
+
+  function createCharts(diseaseKey) {
+    const data = diseaseData[diseaseKey];
+    document.getElementById('dashboardTitle').textContent = data.title;
+    document.getElementById('cariesCount').textContent = data.counts.caries;
+    document.getElementById('gengiviteCount').textContent = data.counts.gengivite;
+    document.getElementById('periodontiteCount').textContent = data.counts.periodontite;
+    document.getElementById('cancerCount').textContent = data.counts.cancer;
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {color: '#6b7280'}, // Tailwind gray-500
+          grid: {color: '#e5e7eb'}  // Tailwind gray-200
+        },
+        x: {
+          ticks: {color: '#6b7280'},
+          grid: {display: false}
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: '#374151' // Tailwind gray-700
+          }
+        }
+      }
+    };
+    // Casos por Período Chart
+    const ctxPeriodo = document.getElementById('casosPorPeriodoChart').getContext('2d');
+    if (casosPorPeriodoChart) casosPorPeriodoChart.destroy();
+    casosPorPeriodoChart = new Chart(ctxPeriodo, {
+      type: 'line',
+      data: {
+        labels: data.casosPeriodo.labels,
+        datasets: [{
+          label: 'Número de Casos',
+          data: data.casosPeriodo.data,
+          borderColor: '#2563eb', // Tailwind blue-600
+          backgroundColor: 'rgba(37, 99, 235, 0.1)', // Lighter blue with alpha
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: '#2563eb',
+          pointBorderColor: '#fff',
+          pointHoverRadius: 7,
+          pointHoverBackgroundColor: '#2563eb'
+        }]
+      },
+      options: chartOptions
+    });
+    // Casos por Faixa Etária Chart
+    const ctxFaixaEtaria = document.getElementById('casosPorFaixaEtariaChart').getContext('2d');
+    if (casosPorFaixaEtariaChart) casosPorFaixaEtariaChart.destroy();
+    casosPorFaixaEtariaChart = new Chart(ctxFaixaEtaria, {
+      type: 'bar',
+      data: {
+        labels: data.casosFaixaEtaria.labels,
+        datasets: [{
+          label: 'Número de Casos',
+          data: data.casosFaixaEtaria.data,
+          backgroundColor: '#10b981', // Tailwind emerald-500
+          borderRadius: 4,
+          barPercentage: 0.7
+        }]
+      },
+      options: chartOptions
+    });
+    // Distribuição por Sexo Chart
+    const ctxSexo = document.getElementById('distribuicaoSexoChart').getContext('2d');
+    if (distribuicaoSexoChart) distribuicaoSexoChart.destroy();
+    distribuicaoSexoChart = new Chart(ctxSexo, {
+      type: 'doughnut',
+      data: {
+        labels: data.distribuicaoSexo.labels,
+        datasets: [{
+          label: 'Distribuição por Sexo',
+          data: data.distribuicaoSexo.data,
+          backgroundColor: ['#3b82f6', '#ec4899', '#f59e0b'], // blue-500, pink-500, amber-500
+          borderColor: '#fff',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#374151'
+            }
+          }
+        }
+      }
+    });
+    // Casos por Região Chart
+    const ctxRegiao = document.getElementById('casosPorRegiaoChart').getContext('2d');
+    if (casosPorRegiaoChart) casosPorRegiaoChart.destroy();
+    casosPorRegiaoChart = new Chart(ctxRegiao, {
+      type: 'line',
+      data: {
+        labels: data.casosRegiao.labels,
+        datasets: [{
+          label: 'Número de Casos',
+          data: data.casosRegiao.data,
+          borderColor: '#2563eb', // Tailwind blue-600
+          backgroundColor: 'rgba(37, 99, 235, 0.1)', // Lighter blue with alpha
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: '#2563eb',
+          pointBorderColor: '#fff',
+          pointHoverRadius: 7,
+          pointHoverBackgroundColor: '#2563eb'
+        }]
+      },
+      options: {
+        ...chartOptions,
+        indexAxis: 'x', // Horizontal bar chart
+      }
+    });
+  }
+
+  // Event Listeners for disease buttons
+  const diseaseButtons = document.querySelectorAll('.disease-button');
+  const navButtons = document.querySelectorAll('.nav-button');
+
+  function setActiveButton(buttons, activeButton) {
+    buttons.forEach(button => {
+      button.classList.remove('active');
+      if (button.dataset.disease === activeButton.dataset.disease) {
+        button.classList.add('active');
+      }
+    });
+  }
+
+  diseaseButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const disease = button.dataset.disease;
+      createCharts(disease);
+      setActiveButton(diseaseButtons, button);
+      // Also update sidebar active state if needed
+      const correspondingNavButton = document.querySelector(`.nav-button[data-disease="${disease}"]`);
+      if (correspondingNavButton) {
+        setActiveButton(navButtons, correspondingNavButton);
+      }
+    });
+  });
+  navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const disease = button.dataset.disease;
+      createCharts(disease);
+      setActiveButton(navButtons, button);
+      // Also update main disease button active state
+      const correspondingDiseaseButton = document.querySelector(`.disease-button[data-disease="${disease}"]`);
+      if (correspondingDiseaseButton && disease !== 'geral') { // Don't activate a specific disease button for "Visão Geral"
+        setActiveButton(diseaseButtons, correspondingDiseaseButton);
+      } else if (disease === 'geral') {
+        diseaseButtons.forEach(db => db.classList.remove('active')); // Remove active from all disease buttons
+      }
+    });
+  });
+  // Initial chart load
+  createCharts('geral');
+</script>
+
+</body>
+</html>

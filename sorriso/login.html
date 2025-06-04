@@ -1,0 +1,85 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin=""/>
+  <link
+    rel="stylesheet"
+    as="style"
+    onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Public+Sans%3Awght%40400%3B500%3B700%3B900"
+  />
+
+  <title>Login</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,"/>
+
+  <script
+    src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body>
+<div
+  class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden"
+  style='font-family: "Public Sans", "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="px-40 flex flex-1 justify-center py-5">
+      <div
+        class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+        <div class="@container">
+          <div class="@[480px]:px-4 @[480px]:py-3">
+            <div
+              class="bg-cover bg-center flex justify-center items-center overflow-hidden bg-white @[480px]:rounded-xl min-h-80"
+              style='
+        background-image:
+          linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 25%),
+          url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcpGPne1s3AKd7a5bTb1KYuFcinCanPehOH_gCvmzmPWgAObHUcOvMdpIPaqCL4h40OEUOGVN6jq04zLLuaDk-_aVoQMd8Dw5zr4qK5bNafCiAjpnw2TlUvoleHHWjMEM4b6Z4VoqiiyQEYvR8EvhMRoAwDB19GPty_T8ldtlt76ZebdZbkweQiSi5UIEuOYOhNBjGQIepd2kUbqam8iQEw5X9SwOuUjlHkvIolp8rLFg6AbqG9vKxGTOIogfy46eWaZIB1xnEvA");
+      '
+            >
+              <p
+                class="text-white text-[48px] font-bold tracking-wide text-center px-4"
+                style="
+          text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
+        "
+              >
+                Sorriso Inteligente
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="max-w-md mx-auto px-4 py-6 flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            class="w-full h-14 rounded-xl border border-[#dce1e5] px-4 text-[#111518] placeholder:text-[#637888] focus:outline-none focus:ring-2 focus:ring-[#1990e5]"
+          />
+
+          <input
+            type="password"
+            placeholder="Senha"
+            class="w-full h-14 rounded-xl border border-[#dce1e5] px-4 text-[#111518] placeholder:text-[#637888] focus:outline-none focus:ring-2 focus:ring-[#1990e5]"
+          />
+
+          <button
+            onclick="window.location.href='atendimento.html'"
+            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#b2d0e5] text-[#121516] text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#1990e5] hover:text-white transition-colors duration-300"
+          >
+            Log In
+          </button>
+
+          <p
+            class="text-center text-[#637888] text-sm underline cursor-pointer">
+            Esqueceu sua senha?
+          </p>
+          <p
+            class="text-center text-[#637888] text-sm underline cursor-pointer">
+            Ainda não tem uma conta? Cadastre-se!
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
